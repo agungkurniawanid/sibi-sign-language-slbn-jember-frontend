@@ -1,14 +1,7 @@
 "use client";
 import { Search } from "lucide-react";
 import { Toggle } from "@/components/ui/toggle";
-import {
-  Calculator,
-  Calendar,
-  CreditCard,
-  Settings,
-  Smile,
-  User,
-} from "lucide-react";
+import { Hand } from "lucide-react";
 
 import {
   Command,
@@ -17,8 +10,6 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
-  CommandShortcut,
 } from "@/components/ui/command";
 import { useState } from "react";
 
@@ -44,6 +35,15 @@ type SearchKosakataProps = {
   onSelect: (value: string) => void;
 };
 
+const KOSAKATA_LIST = [
+  "Saya", "Kamu", "Dia", "Kami", "Mereka",
+  "Makan", "Minum", "Tidur", "Belajar", "Bermain",
+  "Adik", "Kakak", "Ibu", "Ayah", "Teman",
+  "Rumah", "Sekolah", "Buku", "Kursi", "Meja",
+  "Mobil", "Motor", "Sepeda", "Pesawat", "Kapal",
+  "Merah", "Biru", "Hijau", "Kuning", "Putih",
+  "Satu", "Dua", "Tiga", "Empat", "Lima",
+];
 
 export function SearchKosakata({ visible, onSelect }: SearchKosakataProps) {
   const [query, setQuery] = useState("");
@@ -53,56 +53,50 @@ export function SearchKosakata({ visible, onSelect }: SearchKosakataProps) {
     setQuery("");
   };
 
+  const filtered = query.trim().length > 0
+    ? KOSAKATA_LIST.filter((k) => k.toLowerCase().includes(query.toLowerCase()))
+    : [];
+
   return (
     <div className="relative w-full">
-      <Command className="rounded-lg p-2 outline-none shadow-11 w-full">
+      <Command className="rounded-2xl p-2 outline-none shadow-11 w-full bg-white dark:bg-gray-800" shouldFilter={false}>
         <CommandInput
-          placeholder="Cari Kosakata..."
+          placeholder="🔍  Cari kosakata isyarat..."
+          value={query}
           onValueChange={(val) => setQuery(val)}
-          className="outline-none"
+          className="outline-none text-base"
         />
 
         {query.trim().length > 0 && (
-          <CommandList className="absolute top-full left-0 mt-2 w-full rounded-lg border bg-white shadow-lg z-50">
-            <CommandEmpty>No results found.</CommandEmpty>
+          <CommandList className="absolute top-full left-0 mt-2 w-full rounded-2xl border bg-white dark:bg-gray-800 dark:border-gray-700 shadow-lg z-50 overflow-hidden">
+            <CommandEmpty>
+              <div className="flex flex-col items-center py-6 text-gray-400 dark:text-gray-500">
+                <Hand className="w-10 h-10 mb-2 opacity-30" />
+                <p className="text-sm font-medium">Kata tidak ditemukan</p>
+              </div>
+            </CommandEmpty>
 
-            <CommandGroup heading="Suggestions">
-              <CommandItem value="Calendar" onSelect={handleSelect}>
-                <Calendar className="mr-2 h-4 w-4" />
-                <span>Calendar</span>
-              </CommandItem>
-              <CommandItem value="Emoji" onSelect={handleSelect}>
-                <Smile className="mr-2 h-4 w-4" />
-                <span>Search Emoji</span>
-              </CommandItem>
-              <CommandItem value="Calculator" onSelect={handleSelect} disabled>
-                <Calculator className="mr-2 h-4 w-4" />
-                <span>Calculator</span>
-              </CommandItem>
-            </CommandGroup>
-
-            <CommandSeparator />
-
-            <CommandGroup heading="Settings">
-              <CommandItem value="Profile" onSelect={handleSelect}>
-                <User className="mr-2 h-4 w-4" />
-                <span>Profile</span>
-                <CommandShortcut>⌘P</CommandShortcut>
-              </CommandItem>
-              <CommandItem value="Billing" onSelect={handleSelect}>
-                <CreditCard className="mr-2 h-4 w-4" />
-                <span>Billing</span>
-                <CommandShortcut>⌘B</CommandShortcut>
-              </CommandItem>
-              <CommandItem value="Settings" onSelect={handleSelect}>
-                <Settings className="mr-2 h-4 w-4" />
-                <span>Settings</span>
-                <CommandShortcut>⌘S</CommandShortcut>
-              </CommandItem>
-            </CommandGroup>
+            {filtered.length > 0 && (
+              <CommandGroup heading="Kosakata SIBI">
+                {filtered.map((word) => (
+                  <CommandItem
+                    key={word}
+                    value={word}
+                    onSelect={() => handleSelect(word)}
+                    className="cursor-pointer flex items-center gap-3 px-4 py-3 hover:bg-blue-50 dark:hover:bg-blue-950/30 rounded-xl text-sm font-semibold dark:text-gray-200"
+                  >
+                    <span className="w-7 h-7 flex items-center justify-center bg-[#4251AB] text-white rounded-full text-xs font-black">
+                      {word[0]}
+                    </span>
+                    <span>{word}</span>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            )}
           </CommandList>
         )}
       </Command>
     </div>
   );
 }
+

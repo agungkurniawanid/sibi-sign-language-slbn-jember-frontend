@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ModeToggle } from "./theme-button";
-import { useTheme } from "next-themes";
 import { SearchToggle } from "./search-component";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
@@ -14,7 +13,6 @@ export default function NavBar({
   onToggleChange?: (state: boolean) => void;
 }) {
   const pathname = usePathname();
-  const { theme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -23,13 +21,11 @@ export default function NavBar({
 
   return (
     <div className="w-full flex justify-center px-4 sm:px-8 py-4 relative">
-      <nav className={`font-sans flex items-center justify-between w-full lg:w-[60%] xl:w-[50%] 2xl:w-[40%] rounded-[10px] px-6 py-3 shadow-11 ${
-        theme === 'dark' ? 'bg-gray-800' : 'bg-white'
-      }`}>
+      <nav className="font-sans flex items-center justify-between w-full lg:w-[60%] xl:w-[50%] 2xl:w-[40%] rounded-[10px] px-6 py-3 shadow-11 bg-white dark:bg-gray-800">
         <div className="--logo-and-title flex items-center gap-2">
           <div className="--logo">
             <Image
-              src={theme === 'dark' ? "/images/logos/g1.png" : "/images/logos/g1.png"}
+              src="/images/logos/g1.png"
               width={40}
               height={40}
               alt="logo"
@@ -37,15 +33,9 @@ export default function NavBar({
             />
           </div>
           <div className="--title relative flex items-center text-lg font-semibold">
-            <span className={`text-2xl font-black ${
-              theme === 'dark' ? 'text-blue-400' : 'text-[#4251AB]'
-            }`}>Spok</span>
-            <span className={`text-2xl font-extrabold ${
-              theme === 'dark' ? 'text-gray-300' : 'text-[#DEDADE]'
-            }`}>Sibi</span>
-            <span className={`text-2xl font-black ${
-              theme === 'dark' ? 'text-blue-400' : 'text-[#4251AB]'
-            }`}>.</span>
+            <span className="text-2xl font-black text-[#4251AB] dark:text-blue-400">Spok</span>
+            <span className="text-2xl font-extrabold text-[#DEDADE] dark:text-gray-500">Sibi</span>
+            <span className="text-2xl font-black text-[#4251AB] dark:text-blue-400">.</span>
           </div>
         </div>
 
@@ -57,8 +47,8 @@ export default function NavBar({
                 href="/" 
                 className={`flex items-center gap-1 px-3 py-2 rounded-[10px] transition-colors ${
                   pathname === "/" 
-                    ? (theme === 'dark' ? 'bg-blue-600 text-white' : 'bg-[#4251AB] text-white') 
-                    : (theme === 'dark' ? 'hover:text-blue-400' : 'hover:text-[#4251AB]')
+                    ? 'bg-[#4251AB] dark:bg-blue-600 text-white'
+                    : 'text-gray-700 dark:text-gray-200 hover:text-[#4251AB] dark:hover:text-blue-400'
                 }`}
               >
                 <svg
@@ -81,8 +71,8 @@ export default function NavBar({
                 href="/kosakata" 
                 className={`flex items-center gap-1 px-3 py-2 rounded-[10px] transition-colors ${
                   pathname === "/kosakata" 
-                    ? (theme === 'dark' ? 'bg-blue-600 text-white' : 'bg-[#4251AB] text-white') 
-                    : (theme === 'dark' ? 'hover:text-blue-400' : 'hover:text-[#4251AB]')
+                    ? 'bg-[#4251AB] dark:bg-blue-600 text-white'
+                    : 'text-gray-700 dark:text-gray-200 hover:text-[#4251AB] dark:hover:text-blue-400'
                 }`}
               >
                 <svg
@@ -148,8 +138,8 @@ export default function NavBar({
                 href="/" 
                 className={`flex items-center gap-3 px-4 py-3 rounded-[10px] transition-colors ${
                   pathname === "/" 
-                    ? (theme === 'dark' ? 'bg-blue-600 text-white' : 'bg-[#4251AB] text-white') 
-                    : (theme === 'dark' ? 'text-gray-300 hover:text-blue-400' : 'text-gray-700 hover:text-[#4251AB]')
+                    ? 'bg-[#4251AB] dark:bg-blue-600 text-white'
+                    : 'text-gray-700 dark:text-gray-300 hover:text-[#4251AB] dark:hover:text-blue-400'
                 }`}
                 onClick={toggleMenu}
               >
@@ -173,8 +163,8 @@ export default function NavBar({
                 href="/kosakata" 
                 className={`flex items-center gap-3 px-4 py-3 rounded-[10px] transition-colors ${
                   pathname === "/kosakata" 
-                    ? (theme === 'dark' ? 'bg-blue-600 text-white' : 'bg-[#4251AB] text-white') 
-                    : (theme === 'dark' ? 'text-gray-300 hover:text-blue-400' : 'text-gray-700 hover:text-[#4251AB]')
+                    ? 'bg-[#4251AB] dark:bg-blue-600 text-white'
+                    : 'text-gray-700 dark:text-gray-300 hover:text-[#4251AB] dark:hover:text-blue-400'
                 }`}
                 onClick={toggleMenu}
               >
