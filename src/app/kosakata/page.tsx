@@ -1,8 +1,9 @@
 "use client";
 import { SearchKosakata } from "@/components/search-component";
 import NavBar from "../../components/NavBar";
+import ModelTestingComponent from "@/components/ModelTestingComponent";
 import { useState } from "react";
-import { X, BookOpen, PlayCircle } from "lucide-react";
+import { X, BookOpen, PlayCircle, Zap } from "lucide-react";
 
 const CARD_COLORS = [
   { bg: "bg-blue-50 dark:bg-blue-950/30", border: "border-blue-200 dark:border-blue-800", badge: "bg-blue-500", label: "text-blue-700 dark:text-blue-400" },
@@ -16,6 +17,7 @@ const CARD_COLORS = [
 export default function KosakataPage() {
   const [results, setResults] = useState<string[]>([]);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [showTesting, setShowTesting] = useState(false);
 
   const handleAddResult = (value: string) => {
     if (!results.includes(value)) {
@@ -53,8 +55,30 @@ export default function KosakataPage() {
           </p>
         </div>
 
+        {/* Testing Interface Toggle */}
+        <div className="w-full flex justify-center my-6 hidden">
+          <button
+            onClick={() => setShowTesting(!showTesting)}
+            className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
+              showTesting
+                ? 'bg-purple-600 hover:bg-purple-700 text-white'
+                : 'bg-gray-300 hover:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white'
+            }`}
+          >
+            <Zap size={18} />
+            {showTesting ? '✓ Testing Mode Active' : 'Try Testing Mode'}
+          </button>
+        </div>
+
+        {/* Testing Section */}
+        {showTesting && (
+          <div className="w-full mb-8">
+            <ModelTestingComponent />
+          </div>
+        )}
+
         {/* Search Section */}
-        {isSearchOpen && (
+        {isSearchOpen && !showTesting && (
           <div className="w-full flex flex-col items-center mb-8 gap-4">
             <div className="w-full sm:w-[90%] md:w-[70%] lg:w-[50%]">
               <SearchKosakata visible onSelect={handleAddResult} />
@@ -85,6 +109,7 @@ export default function KosakataPage() {
         )}
 
         {/* Video Grid */}
+        {!showTesting && (
         <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           {video_kosakata.map((video, index) => {
             const color = CARD_COLORS[index % CARD_COLORS.length];
@@ -121,9 +146,10 @@ export default function KosakataPage() {
             );
           })}
         </div>
+        )}
 
         {/* Empty state */}
-        {video_kosakata.length === 0 && (
+        {!showTesting && video_kosakata.length === 0 && (
           <div className="w-full flex flex-col items-center justify-center py-20 gap-4 text-gray-400">
             <BookOpen className="w-16 h-16 opacity-30" />
             <p className="text-lg font-semibold">Belum ada kosakata tersedia</p>
